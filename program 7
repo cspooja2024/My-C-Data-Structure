@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int* mergeUnique(int *a, int n1, int *b, int n2, int *size) {
+    int res = (int)malloc((n1 + n2) * sizeof(int));
+    int i = 0, j = 0, k = 0;
+
+    while (i < n1 && j < n2) {
+        if (a[i] < b[j]) res[k++] = a[i++];
+        else if (a[i] > b[j]) res[k++] = b[j++];
+        else {
+            res[k++] = a[i];
+            i++; j++;
+        }
+    }
+    while (i < n1) res[k++] = a[i++];
+    while (j < n2) res[k++] = b[j++];
+
+    *size = k;
+    res = (int*)realloc(res, k * sizeof(int));
+    return res;
+}
+
+int main() {
+    int n1, n2, *a, *b, *merged, size;
+
+    printf("Enter size of array1: ");
+    scanf("%d", &n1);
+    a = (int*)malloc(n1 * sizeof(int));
+    for (int i = 0; i < n1; i++) scanf("%d", &a[i]);
+
+    printf("Enter size of array2: ");
+    scanf("%d", &n2);
+    b = (int*)malloc(n2 * sizeof(int));
+    for (int i = 0; i < n2; i++) scanf("%d", &b[i]);
+
+    merged = mergeUnique(a, n1, b, n2, &size);
+
+    printf("Merged sorted array without duplicates: ");
+    for (int i = 0; i < size; i++) printf("%d ", merged[i]);
+
+    free(a);
+    free(b);
+    free(merged);
+    return 0;
+}
